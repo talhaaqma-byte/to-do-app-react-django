@@ -10,6 +10,8 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 24px;
+  gap: 20px;
+  flex-wrap: wrap;
 }
 
 .todos-header h1 {
@@ -17,6 +19,8 @@
   font-weight: 700;
   color: #111827;
   margin: 0;
+  flex: 1;
+  min-width: 200px;
 }
 
 @media (max-width: 640px) {

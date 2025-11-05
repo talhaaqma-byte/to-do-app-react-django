@@ -34,6 +34,7 @@ const Modal = ({ isOpen, onClose, title, children, size = 'medium' }) => {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 20 }}
             transition={{ duration: 0.3 }}
+            onClick={(e) => e.stopPropagation()}
           >
             <div className="modal-header">
               {title && <h2 className="modal-title">{title}</h2>}

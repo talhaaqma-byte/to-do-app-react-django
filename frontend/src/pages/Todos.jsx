@@ -98,6 +98,7 @@ const Todos = () => {
           setEditingTodo(null);
         }}
         title={editingTodo ? 'Edit Todo' : 'Create Todo'}
+        size="medium"
       >
         <TodoForm
           todo={editingTodo}
