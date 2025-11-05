@@ -16,13 +16,34 @@ const TodoForm = ({ todo, onSubmit, onCancel, loading }) => {
 
   useEffect(() => {
     if (todo) {
-      const dueDateTime = todo.due_datetime ? todo.due_datetime.split('T') : [null, null];
+      // Parse the datetime string from backend (it's in ISO format with timezone)
+      let dueDate = '';
+      let dueTime = '';
+      
+      if (todo.due_datetime) {
+        // Parse the ISO datetime string and convert to local time
+        const dateObj = new Date(todo.due_datetime);
+        if (!isNaN(dateObj.getTime())) {
+          // Extract date in YYYY-MM-DD format (local time)
+          const year = dateObj.getFullYear();
+          const month = String(dateObj.getMonth() + 1).padStart(2, '0');
+          const day = String(dateObj.getDate()).padStart(2, '0');
+          dueDate = `${year}-${month}-${day}`;
+          // Extract time in HH:mm format (local time)
+          const hours = String(dateObj.getHours()).padStart(2, '0');
+          const minutes = String(dateObj.getMinutes()).padStart(2, '0');
+          dueTime = `${hours}:${minutes}`;
+        }
+      } else if (todo.due_date) {
+        dueDate = todo.due_date.split('T')[0];
+      }
+      
       setFormData({
         title: todo.title || '',
         description: todo.description || '',
         priority: todo.priority || 'medium',
-        due_date: dueDateTime[0] || (todo.due_date ? todo.due_date.split('T')[0] : ''),
-        due_datetime: dueDateTime[1] ? dueDateTime[1].substring(0, 5) : '',
+        due_date: dueDate,
+        due_datetime: dueTime,
       });
     }
   }, [todo]);
