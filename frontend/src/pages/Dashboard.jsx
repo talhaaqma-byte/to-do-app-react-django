@@ -144,15 +144,25 @@ const Dashboard = () => {
                 cy="50%"
                 labelLine={false}
                 label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
-                outerRadius={80}
+                outerRadius={100}
+                innerRadius={40}
                 fill="#8884d8"
                 dataKey="value"
+                stroke="#fff"
+                strokeWidth={3}
               >
                 {pieData.map((entry, index) => (
                   <PieCell key={`cell-${index}`} fill={entry.color} />
                 ))}
               </Pie>
-              <Tooltip />
+              <Tooltip 
+                contentStyle={{
+                  backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                  border: '1px solid #e5e7eb',
+                  borderRadius: '8px',
+                  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+                }}
+              />
             </PieChart>
           </ResponsiveContainer>
         </motion.div>
@@ -165,12 +175,35 @@ const Dashboard = () => {
         >
           <h2>Priority Distribution</h2>
           <ResponsiveContainer width="100%" height={300}>
-            <BarChart data={priorityData}>
-              <XAxis dataKey="name" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Bar dataKey="value">
+            <BarChart data={priorityData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
+              <XAxis 
+                dataKey="name" 
+                tick={{ fill: '#6b7280', fontSize: 12 }}
+                axisLine={{ stroke: '#e5e7eb' }}
+              />
+              <YAxis 
+                tick={{ fill: '#6b7280', fontSize: 12 }}
+                axisLine={{ stroke: '#e5e7eb' }}
+              />
+              <Tooltip 
+                contentStyle={{
+                  backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                  border: '1px solid #e5e7eb',
+                  borderRadius: '8px',
+                  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+                }}
+                cursor={{ fill: 'rgba(102, 126, 234, 0.1)' }}
+              />
+              <Legend 
+                wrapperStyle={{ paddingTop: '20px' }}
+                iconType="circle"
+              />
+              <Bar 
+                dataKey="value" 
+                radius={[8, 8, 0, 0]}
+                stroke="#fff"
+                strokeWidth={2}
+              >
                 {priorityData.map((entry, index) => (
                   <BarCell key={`cell-${index}`} fill={entry.color} />
                 ))}
