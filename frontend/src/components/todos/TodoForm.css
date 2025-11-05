@@ -2,9 +2,7 @@
   display: flex;
   flex-direction: column;
   gap: 24px;
-  background: linear-gradient(135deg, #fafbfc 0%, #ffffff 100%);
-  padding: 8px;
-  border-radius: 12px;
+  padding: 28px;
 }
 
 .form-group {

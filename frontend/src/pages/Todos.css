@@ -23,6 +23,50 @@
   min-width: 200px;
 }
 
+.todo-form-container {
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  border-radius: 16px;
+  padding: 0;
+  margin-bottom: 24px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  overflow: hidden;
+}
+
+.todo-form-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 28px;
+  border-bottom: 2px solid #f3f4f6;
+  background: linear-gradient(135deg, #fafbfc 0%, #ffffff 100%);
+}
+
+.todo-form-header h2 {
+  font-size: 24px;
+  font-weight: 700;
+  color: #111827;
+  margin: 0;
+}
+
+.todo-form-close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #6b7280;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.todo-form-close:hover {
+  background: #f3f4f6;
+  color: #111827;
+}
+
 @media (max-width: 640px) {
   .todos-page {
     padding: 16px;
@@ -36,6 +80,14 @@
 
   .todos-header h1 {
     font-size: 24px;
+  }
+
+  .todo-form-header {
+    padding: 20px;
+  }
+
+  .todo-form-header h2 {
+    font-size: 20px;
   }
 }
 

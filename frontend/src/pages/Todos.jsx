@@ -1,12 +1,11 @@
 import { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useTodos } from '../context/TodoContext';
 import TodoList from '../components/todos/TodoList';
 import TodoFilter from '../components/todos/TodoFilter';
 import TodoForm from '../components/todos/TodoForm';
-import Modal from '../components/common/Modal';
 import Button from '../components/common/Button';
-import { FiPlus } from 'react-icons/fi';
+import { FiPlus, FiX } from 'react-icons/fi';
 import './Todos.css';
 
 const Todos = () => {
@@ -83,6 +82,40 @@ const Todos = () => {
 
       <TodoFilter filters={filters} onFilterChange={setFilters} />
 
+      <AnimatePresence>
+        {isModalOpen && (
+          <motion.div
+            className="todo-form-container"
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <div className="todo-form-header">
+              <h2>{editingTodo ? 'Edit Todo' : 'Create Todo'}</h2>
+              <button
+                className="todo-form-close"
+                onClick={() => {
+                  setIsModalOpen(false);
+                  setEditingTodo(null);
+                }}
+              >
+                <FiX size={24} />
+              </button>
+            </div>
+            <TodoForm
+              todo={editingTodo}
+              onSubmit={handleSubmit}
+              onCancel={() => {
+                setIsModalOpen(false);
+                setEditingTodo(null);
+              }}
+              loading={formLoading}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <TodoList
         todos={todos}
         loading={loading}
@@ -90,26 +123,6 @@ const Todos = () => {
         onEdit={handleEdit}
         onDelete={handleDelete}
       />
-
-      <Modal
-        isOpen={isModalOpen}
-        onClose={() => {
-          setIsModalOpen(false);
-          setEditingTodo(null);
-        }}
-        title={editingTodo ? 'Edit Todo' : 'Create Todo'}
-        size="medium"
-      >
-        <TodoForm
-          todo={editingTodo}
-          onSubmit={handleSubmit}
-          onCancel={() => {
-            setIsModalOpen(false);
-            setEditingTodo(null);
-          }}
-          loading={formLoading}
-        />
-      </Modal>
     </div>
   );
 };
