@@ -57,9 +57,26 @@ const TodoForm = ({ todo, onSubmit, onCancel, loading }) => {
 
     // Combine date and time into due_datetime if both are provided
     if (formData.due_date && formData.due_datetime) {
-      // Create datetime string in local timezone format
-      // Format: YYYY-MM-DDTHH:mm (local time, backend will handle timezone)
-      submitData.due_datetime = `${formData.due_date}T${formData.due_datetime}:00`;
+      // Create a Date object in user's local timezone
+      const localDate = new Date(`${formData.due_date}T${formData.due_datetime}`);
+      
+      // Convert to ISO string with timezone offset (this preserves the user's local time)
+      // Format: YYYY-MM-DDTHH:mm:ss+HH:mm
+      const year = localDate.getFullYear();
+      const month = String(localDate.getMonth() + 1).padStart(2, '0');
+      const day = String(localDate.getDate()).padStart(2, '0');
+      const hours = String(localDate.getHours()).padStart(2, '0');
+      const minutes = String(localDate.getMinutes()).padStart(2, '0');
+      
+      // Get timezone offset in format +HH:MM or -HH:MM
+      const tzOffset = -localDate.getTimezoneOffset();
+      const offsetHours = String(Math.floor(Math.abs(tzOffset) / 60)).padStart(2, '0');
+      const offsetMinutes = String(Math.abs(tzOffset) % 60).padStart(2, '0');
+      const offsetSign = tzOffset >= 0 ? '+' : '-';
+      const timezoneOffset = `${offsetSign}${offsetHours}:${offsetMinutes}`;
+      
+      // Create ISO string with timezone
+      submitData.due_datetime = `${year}-${month}-${day}T${hours}:${minutes}:00${timezoneOffset}`;
       submitData.due_date = formData.due_date;
     } else if (formData.due_date) {
       submitData.due_date = formData.due_date;

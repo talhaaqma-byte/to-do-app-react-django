@@ -14,12 +14,13 @@ class Command(BaseCommand):
         now = timezone.now()
         
         # Send reminders for tasks due now (within 1 minute window)
+        # Check todos where due_datetime is within the current minute
         due_now = Todo.objects.filter(
             due_datetime__isnull=False,
             completed=False,
             reminder_sent=False,
-            due_datetime__lte=now,
-            due_datetime__gte=now - timedelta(minutes=1)
+            due_datetime__lte=now + timedelta(seconds=30),  # Allow 30 seconds buffer
+            due_datetime__gte=now - timedelta(seconds=30)   # Allow 30 seconds buffer
         )
         
         for todo in due_now:

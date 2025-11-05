@@ -53,10 +53,10 @@ class TodoSerializer(serializers.ModelSerializer):
                         if timezone.is_naive(dt):
                             dt = timezone.make_aware(dt)
                     else:
-                        # No timezone info - treat the naive datetime as UTC
-                        # This preserves the exact time the user entered (2:35 PM stays 2:35 PM)
+                        # No timezone info - this shouldn't happen if frontend sends timezone
+                        # But if it does, treat as UTC to preserve the time value
                         dt = datetime.fromisoformat(value)
-                        # Make it timezone-aware as UTC (so 2:35 PM entered = 2:35 PM UTC stored)
+                        # Make it timezone-aware as UTC
                         dt = timezone.make_aware(dt, pytz.UTC)
                     return dt
             except (ValueError, AttributeError) as e:
