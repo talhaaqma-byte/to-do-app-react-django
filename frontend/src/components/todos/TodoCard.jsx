@@ -18,29 +18,33 @@ const TodoCard = ({ todo, onToggle, onEdit, onDelete }) => {
 
   const formatDateTime = (dateStr, datetimeStr) => {
     if (datetimeStr) {
-      // Parse the datetime string - backend returns it in ISO format
-      let date;
       try {
-        // Parse as ISO string - JavaScript Date will handle timezone conversion
-        date = new Date(datetimeStr);
+        // Parse the datetime string from backend
+        // Backend stores it as UTC, but we want to display it as the user entered it
+        let date = new Date(datetimeStr);
         
-        // If date is invalid, try a different approach
-        if (isNaN(date.getTime())) {
-          // Fallback: try parsing without timezone
-          const cleanStr = datetimeStr.replace(/[+-]\d{2}:\d{2}$/, '');
-          date = new Date(cleanStr);
+        // Extract date and time components from the ISO string directly
+        // This avoids timezone conversion issues
+        const isoMatch = datetimeStr.match(/^(\d{4}-\d{2}-\d{2})T(\d{2}):(\d{2}):(\d{2})/);
+        if (isoMatch) {
+          const [, datePart, hours, minutes] = isoMatch;
+          // Use the stored hours and minutes directly (they're stored as user entered)
+          const displayDate = new Date(`${datePart}T${hours}:${minutes}`);
+          return format(displayDate, 'MMM dd, yyyy') + ' at ' + format(displayDate, 'h:mm a');
         }
         
-        // Format in local timezone (this will show the time as user entered it)
-        return format(date, 'MMM dd, yyyy') + ' at ' + format(date, 'h:mm a');
+        // Fallback to regular date parsing
+        if (!isNaN(date.getTime())) {
+          return format(date, 'MMM dd, yyyy') + ' at ' + format(date, 'h:mm a');
+        }
       } catch (e) {
         // If parsing fails, try with dateStr
         if (dateStr) {
-          date = new Date(dateStr);
+          const date = new Date(dateStr);
           return format(date, 'MMM dd, yyyy');
         }
-        return null;
       }
+      return null;
     } else if (dateStr) {
       return format(new Date(dateStr), 'MMM dd, yyyy');
     }
