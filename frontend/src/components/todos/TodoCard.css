@@ -1,0 +1,129 @@
+.todo-card {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  border-left: 4px solid #667eea;
+}
+
+.todo-card.completed {
+  opacity: 0.7;
+  background: #f9fafb;
+}
+
+.todo-card-header {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.todo-checkbox {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: flex-start;
+  margin-top: 2px;
+}
+
+.todo-card-content {
+  flex: 1;
+}
+
+.todo-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #111827;
+  margin: 0 0 8px 0;
+  word-break: break-word;
+}
+
+.todo-title.strikethrough {
+  text-decoration: line-through;
+  color: #9ca3af;
+}
+
+.todo-description {
+  font-size: 14px;
+  color: #6b7280;
+  margin: 0;
+  line-height: 1.5;
+  word-break: break-word;
+}
+
+.todo-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 16px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.todo-meta {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.todo-date {
+  font-size: 12px;
+  color: #6b7280;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.todo-priority {
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.todo-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.todo-action-button {
+  background: #f3f4f6;
+  border: none;
+  border-radius: 6px;
+  padding: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #6b7280;
+  transition: all 0.2s;
+}
+
+.todo-action-button.edit:hover {
+  background: #dbeafe;
+  color: #3b82f6;
+}
+
+.todo-action-button.delete:hover {
+  background: #fee2e2;
+  color: #ef4444;
+}
+
+@media (max-width: 640px) {
+  .todo-card {
+    padding: 16px;
+  }
+  
+  .todo-card-footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  
+  .todo-actions {
+    align-self: flex-end;
+  }
+}
+

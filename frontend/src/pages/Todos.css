@@ -1,0 +1,36 @@
+.todos-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.todos-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.todos-header h1 {
+  font-size: 32px;
+  font-weight: 700;
+  color: #111827;
+  margin: 0;
+}
+
+@media (max-width: 640px) {
+  .todos-page {
+    padding: 16px;
+  }
+
+  .todos-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .todos-header h1 {
+    font-size: 24px;
+  }
+}
+

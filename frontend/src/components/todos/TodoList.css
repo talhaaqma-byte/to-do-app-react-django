@@ -1,0 +1,35 @@
+.todo-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 20px;
+}
+
+.todo-list-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 60px 20px;
+}
+
+.todo-list-empty {
+  text-align: center;
+  padding: 60px 20px;
+  color: #9ca3af;
+}
+
+.todo-list-empty h3 {
+  margin: 16px 0 8px 0;
+  color: #6b7280;
+}
+
+.todo-list-empty p {
+  margin: 0;
+  color: #9ca3af;
+}
+
+@media (max-width: 640px) {
+  .todo-list {
+    grid-template-columns: 1fr;
+  }
+}
+
