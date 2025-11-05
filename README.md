@@ -15,7 +15,10 @@ A beautiful, fully responsive To-Do application with user authentication, built 
 - ✅ Create, read, update, and delete todos
 - ✅ Mark todos as complete/incomplete
 - ✅ Set priority levels (Low, Medium, High)
-- ✅ Add due dates
+- ✅ Add due dates and times
+- ✅ Automated email reminders when task time is reached
+- ✅ Follow-up email reminders for overdue tasks
+- ✅ Visual overdue indicators on UI
 - ✅ Search todos by title or description
 - ✅ Filter by status (All, Active, Completed)
 - ✅ Filter by priority
@@ -187,10 +190,35 @@ The frontend will be available at `http://localhost:5173` (or the port shown in 
 2. **Dashboard**: View your statistics and recent todos
 3. **Todos Page**: 
    - Click "Create Todo" to add a new todo
+   - Set task date and time for automated reminders
    - Use filters to search and filter todos
    - Click on a todo card to edit
    - Toggle completion status with the checkbox
    - Delete todos with the delete button
+   - Overdue tasks are highlighted in red with a warning badge
+
+## Email Reminders
+
+### Setup Email (Optional)
+
+For development, emails are printed to console. For production, see `EMAIL_SETUP.md` for configuration.
+
+### Running Reminders
+
+To send email reminders, run the management command:
+
+```bash
+cd backend
+python manage.py send_todo_reminders
+```
+
+**For automated reminders**, set up a cron job or scheduled task to run this command every minute.
+
+### Reminder Logic
+
+1. **Reminder Email**: Sent automatically when `due_datetime` is reached
+2. **Follow-up Email**: Sent 24 hours after due time if task is still incomplete
+3. **UI Indicator**: Overdue tasks show a red badge and warning on the interface
 
 ## Features in Detail
 

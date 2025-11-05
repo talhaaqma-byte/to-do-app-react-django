@@ -55,6 +55,14 @@
   transform: translateY(-1px);
 }
 
+.form-help-text {
+  display: block;
+  margin-top: 6px;
+  font-size: 12px;
+  color: #6b7280;
+  font-style: italic;
+}
+
 .form-actions {
   display: flex;
   gap: 12px;

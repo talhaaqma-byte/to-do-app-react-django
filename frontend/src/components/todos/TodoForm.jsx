@@ -10,16 +10,19 @@ const TodoForm = ({ todo, onSubmit, onCancel, loading }) => {
     description: '',
     priority: 'medium',
     due_date: '',
+    due_datetime: '',
   });
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
     if (todo) {
+      const dueDateTime = todo.due_datetime ? todo.due_datetime.split('T') : [null, null];
       setFormData({
         title: todo.title || '',
         description: todo.description || '',
         priority: todo.priority || 'medium',
-        due_date: todo.due_date ? todo.due_date.split('T')[0] : '',
+        due_date: dueDateTime[0] || (todo.due_date ? todo.due_date.split('T')[0] : ''),
+        due_datetime: dueDateTime[1] ? dueDateTime[1].substring(0, 5) : '',
       });
     }
   }, [todo]);
@@ -47,11 +50,23 @@ const TodoForm = ({ todo, onSubmit, onCancel, loading }) => {
     e.preventDefault();
     if (!validate()) return;
 
-    const submitData = {
+    let submitData = {
       ...formData,
-      due_date: formData.due_date || null,
       description: formData.description || null,
     };
+
+    // Combine date and time into due_datetime if both are provided
+    if (formData.due_date && formData.due_datetime) {
+      submitData.due_datetime = `${formData.due_date}T${formData.due_datetime}:00`;
+      submitData.due_date = formData.due_date;
+    } else if (formData.due_date) {
+      submitData.due_date = formData.due_date;
+      submitData.due_datetime = null;
+    } else {
+      submitData.due_date = null;
+      submitData.due_datetime = null;
+    }
+
     onSubmit(submitData);
   };
 
@@ -96,16 +111,31 @@ const TodoForm = ({ todo, onSubmit, onCancel, loading }) => {
         </div>
 
         <div className="form-group">
-          <label className="input-label">Due Date</label>
+          <label className="input-label">Task Date</label>
           <input
             name="due_date"
             type="date"
             value={formData.due_date}
             onChange={handleChange}
             className="input-field"
+            min={new Date().toISOString().split('T')[0]}
           />
         </div>
       </div>
+
+      {formData.due_date && (
+        <div className="form-group">
+          <label className="input-label">Task Time</label>
+          <input
+            name="due_datetime"
+            type="time"
+            value={formData.due_datetime}
+            onChange={handleChange}
+            className="input-field"
+          />
+          <small className="form-help-text">You will receive an email reminder at this time</small>
+        </div>
+      )}
 
       <div className="form-actions">
         <Button type="button" variant="secondary" onClick={onCancel}>

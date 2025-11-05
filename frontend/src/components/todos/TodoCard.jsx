@@ -16,15 +16,30 @@ const TodoCard = ({ todo, onToggle, onEdit, onDelete }) => {
     low: 'Low',
   };
 
+  const formatDateTime = (dateStr, datetimeStr) => {
+    if (datetimeStr) {
+      const date = new Date(datetimeStr);
+      return format(date, 'MMM dd, yyyy') + ' at ' + format(date, 'h:mm a');
+    } else if (dateStr) {
+      return format(new Date(dateStr), 'MMM dd, yyyy');
+    }
+    return null;
+  };
+
+  const displayDate = formatDateTime(todo.due_date, todo.due_datetime);
+
   return (
     <motion.div
-      className={`todo-card ${todo.completed ? 'completed' : ''}`}
+      className={`todo-card ${todo.completed ? 'completed' : ''} ${todo.is_overdue ? 'overdue' : ''}`}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, scale: 0.9 }}
       whileHover={{ scale: 1.02, boxShadow: '0 8px 16px rgba(0,0,0,0.1)' }}
       transition={{ duration: 0.3 }}
     >
+      {todo.is_overdue && !todo.completed && (
+        <div className="overdue-badge">⚠️ Overdue Task</div>
+      )}
       <div className="todo-card-header">
         <button
           className="todo-checkbox"
@@ -38,7 +53,7 @@ const TodoCard = ({ todo, onToggle, onEdit, onDelete }) => {
           )}
         </button>
         <div className="todo-card-content">
-          <h3 className={`todo-title ${todo.completed ? 'strikethrough' : ''}`}>
+          <h3 className={`todo-title ${todo.completed ? 'strikethrough' : ''} ${todo.is_overdue ? 'overdue-text' : ''}`}>
             {todo.title}
           </h3>
           {todo.description && (
@@ -49,9 +64,9 @@ const TodoCard = ({ todo, onToggle, onEdit, onDelete }) => {
 
       <div className="todo-card-footer">
         <div className="todo-meta">
-          {todo.due_date && (
-            <span className="todo-date">
-              📅 {format(new Date(todo.due_date), 'MMM dd, yyyy')}
+          {displayDate && (
+            <span className={`todo-date ${todo.is_overdue ? 'overdue-date' : ''}`}>
+              📅 {displayDate}
             </span>
           )}
           <span

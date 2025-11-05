@@ -3,10 +3,15 @@ from .models import Todo
 
 
 class TodoSerializer(serializers.ModelSerializer):
+    is_overdue = serializers.SerializerMethodField()
+    
     class Meta:
         model = Todo
-        fields = ['id', 'title', 'description', 'completed', 'priority', 'due_date', 'created_at', 'updated_at']
-        read_only_fields = ['id', 'created_at', 'updated_at']
+        fields = ['id', 'title', 'description', 'completed', 'priority', 'due_date', 'due_datetime', 'is_overdue', 'created_at', 'updated_at']
+        read_only_fields = ['id', 'created_at', 'updated_at', 'is_overdue']
+    
+    def get_is_overdue(self, obj):
+        return obj.is_overdue()
     
     def validate_title(self, value):
         if len(value) < 1:
