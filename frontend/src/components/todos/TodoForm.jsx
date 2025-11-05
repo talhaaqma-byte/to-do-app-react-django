@@ -57,6 +57,8 @@ const TodoForm = ({ todo, onSubmit, onCancel, loading }) => {
 
     // Combine date and time into due_datetime if both are provided
     if (formData.due_date && formData.due_datetime) {
+      // Create datetime string in local timezone format
+      // Format: YYYY-MM-DDTHH:mm (local time, backend will handle timezone)
       submitData.due_datetime = `${formData.due_date}T${formData.due_datetime}:00`;
       submitData.due_date = formData.due_date;
     } else if (formData.due_date) {

@@ -18,8 +18,29 @@ const TodoCard = ({ todo, onToggle, onEdit, onDelete }) => {
 
   const formatDateTime = (dateStr, datetimeStr) => {
     if (datetimeStr) {
-      const date = new Date(datetimeStr);
-      return format(date, 'MMM dd, yyyy') + ' at ' + format(date, 'h:mm a');
+      // Parse the datetime string - backend returns it in ISO format
+      let date;
+      try {
+        // Parse as ISO string - JavaScript Date will handle timezone conversion
+        date = new Date(datetimeStr);
+        
+        // If date is invalid, try a different approach
+        if (isNaN(date.getTime())) {
+          // Fallback: try parsing without timezone
+          const cleanStr = datetimeStr.replace(/[+-]\d{2}:\d{2}$/, '');
+          date = new Date(cleanStr);
+        }
+        
+        // Format in local timezone (this will show the time as user entered it)
+        return format(date, 'MMM dd, yyyy') + ' at ' + format(date, 'h:mm a');
+      } catch (e) {
+        // If parsing fails, try with dateStr
+        if (dateStr) {
+          date = new Date(dateStr);
+          return format(date, 'MMM dd, yyyy');
+        }
+        return null;
+      }
     } else if (dateStr) {
       return format(new Date(dateStr), 'MMM dd, yyyy');
     }
